@@ -92,7 +92,7 @@ def process(packet):
                             conn.commit()
                         else:
                             print('|{:^25}|{:^25}|{:^25}|{:^25}|{:^25}|'.format(i[0], i[1], '-', '-', '-'))
-                        print('-' * 162)
+                        print('-' * 131)
             except IndexError:
                 pass
 
