@@ -65,7 +65,6 @@ def process(packet):
                             if check == []:
                                 sql = "INSERT INTO device(IP,MAC,Device,Status,currenttime) VALUES(?,?,?,?,?)"
                                 creds = [i[0], i[1], "-", "Attacker", Connection_Time]
-
                             else:
                                 sql = "UPDATE device SET IP = ?, MAC = ?, Device = ?, Status = ?, currenttime = ?  where MAC = ?"
                                 creds = [i[0], i[1], "-", "Attacker", Connection_Time, attacker_mac]
@@ -84,7 +83,6 @@ def process(packet):
                                 conn.commit()
                                 sql = "INSERT INTO device(IP,MAC,Device,Status,currenttime) VALUES(?,?,?,?,?)"
                                 creds = [i[0], i[1], "-", "Target", Connection_Time]
-
                             else:
                                 sql = "UPDATE device SET IP = ?, MAC = ?, Device = ?, Status = ?, currenttime = ?  where MAC = ?"
                                 creds = [i[0], i[1], "-", "Target", Connection_Time, target_mac]
