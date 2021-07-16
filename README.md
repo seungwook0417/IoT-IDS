@@ -11,7 +11,6 @@ IoT ARP Spoof Attacks IDS
 * 본 프로젝트는 가정용 IoT, 서버, 네트워크에서 이상 징후(ARP Spoof)를 탐지하는 시스템을 구현하였다.
 
 
-
 ## 프로젝트 결과
 
 * 모니터링 프로그램
@@ -32,3 +31,15 @@ IoT ARP Spoof Attacks IDS
 
 ![공격 상황 시](https://github.com/seungwook0417/IoT-IDS/blob/master/resource/web.png)
 
+
+## 개발 환경
+
+- Lang : Python 3.6
+- Web Framework : flask
+- OS : Ubuntu 18.04
+
+
+## 실행 환경
+
+* 라즈베리파이
+* 네트워크 가능한 UNIX 기반의 환경(VM 포함)
