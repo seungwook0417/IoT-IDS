@@ -43,6 +43,21 @@ def get_mac(ip):
     result = srp(p, timeout=3, verbose=False)[0]
     return result[0][1].hwsrc
 
+def ARP_detection(ip, mac, status):
+    print('|{:^25}|{:^25}|{:^25}|{:^25}|{:^25}|'.format(ip, mac, '-', status, Connection_Time))
+    cur = conn.cursor()
+    sql = "SELECT * FROM device WHERE MAC = ?"
+    creds = [str(mac)]
+    check = cur.execute(sql, creds).fetchall()
+    if check == []:
+        sql = "INSERT INTO device(IP,MAC,Device,Status,currenttime) VALUES(?,?,?,?,?)"
+        creds = [ip, mac, "-", status, Connection_Time]
+    else:
+        sql = "UPDATE device SET IP = ?, MAC = ?, Device = ?, Status = ?, currenttime = ?  where MAC = ?"
+        creds = [ip, mac, "-", status, Connection_Time, mac]
+    cur = conn.cursor()
+    cur.execute(sql, creds)
+    conn.commit()
 
 def process(packet):
     if packet.haslayer(ARP):
@@ -57,37 +72,9 @@ def process(packet):
                     frame()
                     for i in device:
                         if i[1] == attacker_mac:
-                            print('|{:^25}|{:^25}|{:^25}|{:^25}|{:^25}|'.format(i[0], i[1], '-', 'Attacker', Connection_Time))
-                            cur = conn.cursor()
-                            sql = "SELECT * FROM device WHERE MAC = ?"
-                            creds = [str(attacker_mac)]
-                            check = cur.execute(sql,creds).fetchall()
-                            if check == []:
-                                sql = "INSERT INTO device(IP,MAC,Device,Status,currenttime) VALUES(?,?,?,?,?)"
-                                creds = [i[0], i[1], "-", "Attacker", Connection_Time]
-                            else:
-                                sql = "UPDATE device SET IP = ?, MAC = ?, Device = ?, Status = ?, currenttime = ?  where MAC = ?"
-                                creds = [i[0], i[1], "-", "Attacker", Connection_Time, attacker_mac]
-                            cur = conn.cursor()
-                            cur.execute(sql, creds)
-                            conn.commit()
+                            ARP_detection(i[0], i[1],"Attcker")
                         elif i[1] == target_mac:
-                            print('|{:^25}|{:^25}|{:^25}|{:^25}|{:^25}|'.format(i[0], i[1], '-', 'Target', Connection_Time))
-                            cur = conn.cursor()
-                            sql = "SELECT * FROM device WHERE MAC = ?"
-                            creds = [str(target_mac)]
-                            check = cur.execute(sql, creds).fetchall()
-                            if check == []:
-                                cur = conn.cursor()
-                                cur.execute("UPDATE attack SET attacks = attacks + 1 where id = 1")
-                                conn.commit()
-                                sql = "INSERT INTO device(IP,MAC,Device,Status,currenttime) VALUES(?,?,?,?,?)"
-                                creds = [i[0], i[1], "-", "Target", Connection_Time]
-                            else:
-                                sql = "UPDATE device SET IP = ?, MAC = ?, Device = ?, Status = ?, currenttime = ?  where MAC = ?"
-                                creds = [i[0], i[1], "-", "Target", Connection_Time, target_mac]
-                            cur.execute(sql, creds)
-                            conn.commit()
+                            ARP_detection(i[0], i[1],"Target")
                         else:
                             print('|{:^25}|{:^25}|{:^25}|{:^25}|{:^25}|'.format(i[0], i[1], '-', '-', '-'))
                         print('-' * 131)
