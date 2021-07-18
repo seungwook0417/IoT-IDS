@@ -64,7 +64,7 @@ def process(packet):
         if packet[ARP].op == 2:
             try:
                 # real MAC address of the sender
-                target_ip = packet[ARP].psrc
+                # target_ip = packet[ARP].psrc
                 target_mac = get_mac(packet[ARP].psrc)
                 attacker_mac = packet[ARP].hwsrc
                 if target_mac != attacker_mac:
